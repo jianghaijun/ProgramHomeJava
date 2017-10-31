@@ -58,6 +58,7 @@ public class UserController {
 		userName = StringTranscodingUtil.stringToUtf8(userName);
 		passWord = StringTranscodingUtil.stringToUtf8(passWord);
 		
+		
 		BaseModel baseModel = new BaseModel();
 		if ("".equals(userName) || null == userName || "".equals(passWord) || null == passWord) {
 			baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
