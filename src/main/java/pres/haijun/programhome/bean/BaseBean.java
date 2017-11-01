@@ -27,4 +27,5 @@ import java.awt.List;
  *  Created by HaiJun on 2017年10月30日 下午10:40:32
  */
 public class BaseBean {
+	private String code;
 }
