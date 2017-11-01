@@ -27,6 +27,6 @@ import pres.haijun.programhome.bean.UserBean;
  *  Created by HaiJun on 2017年10月30日 下午9:33:37
  */
 public interface UserDao {
-	public int regionUser(UserBean user);
+	public int registeredUser(UserBean user);
 	public UserBean findUser(UserBean user);
 }

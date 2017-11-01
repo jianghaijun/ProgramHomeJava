@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	private UserDao userDao;
 
-	public int regionUser(UserBean user) {
-		return userDao.regionUser(user);
+	public int registeredUser(UserBean user) {
+		return userDao.registeredUser(user);
 	}
 	
 	public UserBean findUser(UserBean user) {

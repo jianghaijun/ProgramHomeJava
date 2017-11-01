@@ -26,6 +26,6 @@ import pres.haijun.programhome.bean.UserBean;
  *  Created by HaiJun on 2017年10月30日 下午9:34:12
  */
 public interface UserService {
-	public int regionUser(UserBean user);
+	public int registeredUser(UserBean user);
 	public UserBean findUser(UserBean user);
 }

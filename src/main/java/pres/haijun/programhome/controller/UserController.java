@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import pres.haijun.programhome.bean.UserBean;
@@ -14,7 +13,6 @@ import pres.haijun.programhome.model.BaseModel;
 import pres.haijun.programhome.service.UserService;
 import pres.haijun.programhome.utils.ConstantUtil;
 import pres.haijun.programhome.utils.EncryptionUtil;
-import pres.haijun.programhome.utils.StringTranscodingUtil;
 
 /**
  * 
@@ -52,11 +50,11 @@ public class UserController {
 	 * @param passWord
 	 * @return
 	 */
-	@RequestMapping(value = "/regionUser", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+	@RequestMapping(value = "/registeredUser", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
-	public BaseModel regionUser(@RequestParam String userName, @RequestParam String passWord) {
-		userName = StringTranscodingUtil.stringToUtf8(userName);
-		passWord = StringTranscodingUtil.stringToUtf8(passWord);
+	public BaseModel regionUser(@RequestBody UserBean userBean) {
+		String userName = userBean.getUserName();
+		String passWord = userBean.getPassword();
 		
 		BaseModel baseModel = new BaseModel();
 		if ("".equals(userName) || null == userName || "".equals(passWord) || null == passWord) {
@@ -64,7 +62,7 @@ public class UserController {
 			baseModel.setMessage(ConstantUtil.USERNAME_PASSWORD_CAN_NOT_EMPTY);
 		} else {
 			UserBean useBean = new UserBean();
-			useBean.setUser_name(userName);
+			useBean.setUserName(userName);
 			try {
 				EncryptionUtil util = new EncryptionUtil();
 				useBean.setPassword(util.encrypt(passWord));
@@ -78,7 +76,7 @@ public class UserController {
 				baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
 				baseModel.setMessage(ConstantUtil.USER_OLREADY_REGION);
 			} else {
-				int rows = userService.regionUser(useBean);
+				int rows = userService.registeredUser(useBean);
 				if (rows > 0) {
 					baseModel.setCode(ConstantUtil.CODE_FLAG_ZERO);
 					baseModel.setMessage(ConstantUtil.REGION_SUCCESSFUL);
@@ -90,12 +88,6 @@ public class UserController {
 		}
 		return baseModel;
 	}
-	
-	@RequestMapping(value = "/findUser", method = RequestMethod.GET)
-	@ResponseBody
-	public UserBean findUser() {
-		UserBean user = userService.findUser(new UserBean());
-		return user;
-	}
+
 	
 }
