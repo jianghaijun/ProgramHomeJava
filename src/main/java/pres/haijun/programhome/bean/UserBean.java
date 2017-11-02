@@ -29,8 +29,36 @@ import java.io.Serializable;
 public class UserBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String userHead;
+	private String userPhone;
 	private String userName;
 	private String password;
+	private String userId;
+	private String newPassword;
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getUserHead() {
+		return userHead;
+	}
+
+	public void setUserHead(String userHead) {
+		this.userHead = userHead;
+	}
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -46,6 +74,18 @@ public class UserBean implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }
