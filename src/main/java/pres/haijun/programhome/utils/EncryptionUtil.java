@@ -1,7 +1,6 @@
 package pres.haijun.programhome.utils;
 
 import java.security.Key;
-
 import javax.crypto.Cipher;
 /**
  * 
@@ -26,11 +25,10 @@ import javax.crypto.Cipher;
  * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  * 			                  佛祖保佑       永无BUG
  *
- * 			Create HaiJun By 2017年10月31日
+ * 			Create HaiJun By 2017��10��31��
  *
  */
 public class EncryptionUtil {
-	/** 字符串默认键值 */
 	private static String strDefaultKey = "national";
 	/** 加密工具 */
 	private Cipher encryptCipher = null;
