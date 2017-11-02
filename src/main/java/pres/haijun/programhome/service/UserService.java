@@ -1,5 +1,6 @@
 package pres.haijun.programhome.service;
 
+import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
 /**
  * 
@@ -27,5 +28,7 @@ import pres.haijun.programhome.bean.UserBean;
  */
 public interface UserService {
 	public int registeredUser(UserBean user);
+	public int updateUser(UserBean user);
+	public LoginBean login(UserBean user);
 	public UserBean findUser(UserBean user);
 }

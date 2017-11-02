@@ -1,8 +1,4 @@
-package pres.haijun.programhome.dao;
-
-import pres.haijun.programhome.bean.LoginBean;
-import pres.haijun.programhome.bean.UserBean;
-
+package pres.haijun.programhome.model;
 /**
  * 
  *                     _ooOoo_
@@ -24,12 +20,23 @@ import pres.haijun.programhome.bean.UserBean;
  * ======`-.____`-.___\_____/___.-`____.-'======
  *                     `=---='
  * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- * 			                     佛祖保佑       永无BUG
- *  Created by HaiJun on 2017年10月30日 下午9:33:37
+ * 			                  佛祖保佑       永无BUG
+ *
+ * 			  Create HaiJun By 2017年11月2日
+ *
  */
-public interface UserDao {
-	public int registeredUser(UserBean user);
-	public int updateUser(UserBean user);
-	public LoginBean login(UserBean user);
-	public UserBean findUser(UserBean user);
+
+import pres.haijun.programhome.bean.LoginBean;
+
+public class LoginModel extends BaseModel {
+	private LoginBean result;
+
+	public LoginBean getResult() {
+		return result;
+	}
+
+	public void setResult(LoginBean result) {
+		this.result = result;
+	}
+
 }

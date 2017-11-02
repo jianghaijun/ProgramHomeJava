@@ -4,27 +4,51 @@
     <insert id="registeredUser" parameterType="pres.haijun.programhome.bean.UserBean">
     	insert into t_user
     	<trim prefix="(" suffix=")" suffixOverrides=",">
-    		<if test="userName != null">
-    			userName,
+    		<if test="userPhone != null">
+    			userPhone,
     		</if>
     		<if test="password != null">
     			password,
     		</if>
+    		<if test="userId != null">
+    			userId,
+    		</if>
     	</trim>
     	
     	<trim prefix="values (" suffix=")" suffixOverrides=",">
-    		<if test="userName != null">
-    			#{userName, jdbcType=VARCHAR},
+    		<if test="userPhone != null">
+    			#{userPhone, jdbcType=VARCHAR},
     		</if>
     		<if test="password != null">
     			#{password, jdbcType=VARCHAR},
+    		</if>
+    		<if test="userId != null">
+    			#{userId, jdbcType=VARCHAR},
     		</if>
     	</trim>
     </insert>
     
     <select id="findUser" parameterType="pres.haijun.programhome.bean.UserBean" resultType="pres.haijun.programhome.bean.UserBean">
-        select * from t_user where userName = #{userName, jdbcType=VARCHAR}
+        select * from t_user where userPhone = #{userPhone, jdbcType=VARCHAR}
     </select>
+    
+    <select id="login" parameterType="pres.haijun.programhome.bean.UserBean" resultType="pres.haijun.programhome.bean.LoginBean">
+        select userName, userId from t_user where userPhone = #{userPhone, jdbcType=VARCHAR} and password = #{password, jdbcType=VARCHAR}
+    </select>
+    
+    <update id="updateUser" parameterType="pres.haijun.programhome.bean.UserBean">
+    	update t_user
+    	<set>
+    		<if test="userName != null">
+    			userName = #{userName, jdbcType=VARCHAR},
+    		</if>
+    		
+    		<if test="newPassword != null">
+    			password = #{newPassword, jdbcType=VARCHAR},
+    		</if>
+    	</set>
+    	where userId = #{userId, jdbcType=VARCHAR}
+    </update>
     
     <!-- <select id="selectUserById" parameterType="int" resultType="UserBean">
     	select * from user where id = #{id, jdbcType=INTEGER}

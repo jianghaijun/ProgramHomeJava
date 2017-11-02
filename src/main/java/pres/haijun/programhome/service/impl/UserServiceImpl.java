@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
 import pres.haijun.programhome.dao.UserDao;
 import pres.haijun.programhome.service.UserService;
@@ -43,6 +44,16 @@ public class UserServiceImpl implements UserService {
 	
 	public UserBean findUser(UserBean user) {
 		return userDao.findUser(user);
+	}
+
+	@Override
+	public int updateUser(UserBean user) {
+		return userDao.updateUser(user);
+	}
+
+	@Override
+	public LoginBean login(UserBean user) {
+		return userDao.login(user);
 	}
 
 }

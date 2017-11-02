@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
 import pres.haijun.programhome.model.BaseModel;
+import pres.haijun.programhome.model.LoginModel;
 import pres.haijun.programhome.service.UserService;
 import pres.haijun.programhome.utils.ConstantUtil;
 import pres.haijun.programhome.utils.EncryptionUtil;
+import pres.haijun.programhome.utils.RandomCodeUtil;
+import pres.haijun.programhome.utils.TextUtil;
 
 /**
  * 
@@ -53,30 +57,31 @@ public class UserController {
 	@RequestMapping(value = "/registeredUser", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public BaseModel regionUser(@RequestBody UserBean userBean) {
-		String userName = userBean.getUserName();
+		String userPhone = userBean.getUserPhone();
 		String passWord = userBean.getPassword();
 		
 		BaseModel baseModel = new BaseModel();
-		if ("".equals(userName) || null == userName || "".equals(passWord) || null == passWord) {
+		if (TextUtil.isEmpty(userPhone) || TextUtil.isEmpty(passWord)) {
 			baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
-			baseModel.setMessage(ConstantUtil.USERNAME_PASSWORD_CAN_NOT_EMPTY);
+			baseModel.setMessage(ConstantUtil.USERPHONE_PASSWORD_CAN_NOT_EMPTY);
 		} else {
-			UserBean useBean = new UserBean();
-			useBean.setUserName(userName);
+			UserBean bean = new UserBean();
+			bean.setUserPhone(userPhone);
+			bean.setUserId(RandomCodeUtil.createCode(userPhone));
 			try {
 				EncryptionUtil util = new EncryptionUtil();
-				useBean.setPassword(util.encrypt(passWord));
+				bean.setPassword(util.encrypt(passWord));
 			} catch (Exception e) {
-				useBean.setPassword(passWord);
+				bean.setPassword(passWord);
 				e.printStackTrace();
 			}
 			// 是否已经注册过
-			boolean isHaveRegion = userService.findUser(useBean) != null ? true : false;
+			boolean isHaveRegion = userService.findUser(bean) != null ? true : false;
 			if (isHaveRegion) {
 				baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
 				baseModel.setMessage(ConstantUtil.USER_OLREADY_REGION);
 			} else {
-				int rows = userService.registeredUser(useBean);
+				int rows = userService.registeredUser(bean);
 				if (rows > 0) {
 					baseModel.setCode(ConstantUtil.CODE_FLAG_ZERO);
 					baseModel.setMessage(ConstantUtil.REGION_SUCCESSFUL);
@@ -89,5 +94,75 @@ public class UserController {
 		return baseModel;
 	}
 
+	/**
+	 * 用户登录
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	@ResponseBody
+	public LoginModel login(@RequestBody UserBean user) {
+		String userPhone = user.getUserPhone();
+		String password = user.getPassword();
+		LoginModel model = new LoginModel();
+		if (TextUtil.isEmpty(userPhone) || TextUtil.isEmpty(password)) {
+			model.setCode(ConstantUtil.CODE_FLAG_ONE);
+			model.setMessage(ConstantUtil.USERPHONE_PASSWORD_CAN_NOT_EMPTY);
+			model.setResult(new LoginBean());
+		} else {
+			EncryptionUtil util;
+			try {
+				util = new EncryptionUtil();
+				user.setPassword(util.encrypt(password));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			LoginBean loginBean = userService.login(user);
+			if (loginBean != null) {
+				model.setCode(ConstantUtil.CODE_FLAG_ZERO);
+				model.setMessage(ConstantUtil.LOGIN_SUCCESSFUL);
+				model.setResult(loginBean);
+			} else {
+				model.setCode(ConstantUtil.CODE_FLAG_ONE);
+				model.setMessage(ConstantUtil.USERPHONE_PASSWORD_ERROR);
+				model.setResult(new LoginBean());
+			}
+		}
+		return model;
+	}
 	
+	/**
+	 * 修改用户名或密码
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/updatePassWord", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	@ResponseBody
+	public BaseModel updatePassWord(@RequestBody UserBean user) {
+		String userId = user.getUserId();
+		String newPassword = user.getNewPassword();
+		
+		BaseModel model = new BaseModel();
+		if (TextUtil.isEmpty(userId) || TextUtil.isEmpty(newPassword)) {
+			model.setCode(ConstantUtil.CODE_FLAG_ONE);
+			model.setMessage(ConstantUtil.PARAMETER_CAN_NOT_EMPTY);
+		} else {
+			EncryptionUtil util;
+			try {
+				util = new EncryptionUtil();
+				user.setNewPassword(util.encrypt(newPassword));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			int size = userService.updateUser(user);
+			if (size > 0) {
+				model.setCode(ConstantUtil.CODE_FLAG_ZERO);
+				model.setMessage(ConstantUtil.UPDATE_SUCCESSFUL);
+			} else {
+				model.setCode(ConstantUtil.CODE_FLAG_ONE);
+				model.setMessage(ConstantUtil.UPDATE_ERROR);
+			}
+		}
+		return model;
+	}
 }
