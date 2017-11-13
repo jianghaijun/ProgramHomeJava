@@ -53,44 +53,4 @@
     	</set>
     	where userId = #{userId, jdbcType=VARCHAR}
     </update>
-    
-    <!-- <select id="selectUserById" parameterType="int" resultType="UserBean">
-    	select * from user where id = #{id, jdbcType=INTEGER}
-    </select>
-    
-    <insert id="insertUser" parameterType="com.ssm.test.bean.UserBean">
-    	insert into user
-    	<trim prefix="(" suffix=")" suffixOverrides=",">
-    		<if test="id != null">
-    			id,
-    		</if>
-    		<if test="userName != null">
-    			userName,
-    		</if>
-    	</trim>
-    	
-    	<trim prefix="values (" suffix=")" suffixOverrides=",">
-    		<if test="id != null">
-    			#{id, jdbcType=INTEGER},
-    		</if>
-    		<if test="userName != null">
-    			#{userName, jdbcType=VARCHAR},
-    		</if>
-    	</trim>
-    </insert>
-    
-    <update id="updateUser" parameterType="com.ssm.test.bean.UserBean">
-    	update user
-    	<set>
-    		<if test="userName != null">
-    			userName = #{userName, jdbcType=VARCHAR},
-    		</if>
-    	</set>
-    	where id = #{id, jdbcType=INTEGER}
-    </update>
-    
-    <delete id="deleteUser" parameterType="com.ssm.test.bean.UserBean">
-    	delete from user
-    	where id = #{id, jdbcType=INTEGER}
-    </delete> -->
 </mapper>
