@@ -46,6 +46,10 @@
     		<if test="newPassword != null">
     			password = #{newPassword, jdbcType=VARCHAR},
     		</if>
+    		
+    		<if test="userHead != null">
+    			userHead = #{userHead, jdbcType=VARCHAR},
+    		</if>
     	</set>
     	where userId = #{userId, jdbcType=VARCHAR}
     </update>

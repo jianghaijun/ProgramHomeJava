@@ -1,12 +1,16 @@
 package pres.haijun.programhome.controller;
 
+import java.io.File;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
@@ -132,7 +136,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 修改用户名或密码
+	 * 修改用户名、密码
 	 * @param user
 	 * @return
 	 */
@@ -164,5 +168,46 @@ public class UserController {
 			}
 		}
 		return model;
+	}
+	
+	/**
+	 * 头像上传
+	 * @param file
+	 * @param userPhone
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadUserHead", method = RequestMethod.POST)
+	@ResponseBody
+	public BaseModel uploadUserHead(@RequestParam(value = "file", required = false) MultipartFile file, String userId) {
+		BaseModel baseModel = new BaseModel();
+		if (!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			fileName = fileName.substring(fileName.lastIndexOf("."));
+			fileName = System.currentTimeMillis() + fileName;
+			
+			File targetFile = new File(ConstantUtil.USER_HEAD_URL, fileName);
+			if (!targetFile.exists()) {
+				targetFile.mkdirs();
+			}
+
+			// 保存
+			try {
+				file.transferTo(targetFile);
+				UserBean user = new UserBean();
+				user.setUserId(userId);
+				user.setUserHead(ConstantUtil.USER_HEAD + fileName);
+				userService.updateUser(user);
+				baseModel.setCode(ConstantUtil.CODE_FLAG_ZERO);
+				baseModel.setMessage(ConstantUtil.UPLOAD_SUCCESSFUL);
+			} catch (Exception e) {
+				e.printStackTrace();
+				baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
+				baseModel.setMessage(ConstantUtil.ADD_FILE);
+			}
+		} else {
+			baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
+			baseModel.setMessage(ConstantUtil.ADD_FILE);
+		}
+		return baseModel;
 	}
 }
