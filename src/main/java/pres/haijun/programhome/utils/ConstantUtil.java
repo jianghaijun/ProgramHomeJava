@@ -46,5 +46,13 @@ public class ConstantUtil {
 	public static final String UPDATE_SUCCESSFUL = "修改成功!";
 	/**修改失败*/
 	public static final String UPDATE_ERROR = "修改失败!";
-
+	/**请添加文件*/
+	public static final String ADD_FILE = "请添加文件!";
+	/**用户头像存储路径*/
+	public static final String USER_HEAD_URL = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "../../../ProgramHomeImgs/UserHead/";
+	/**用户头像路径*/
+	public static final String USER_HEAD = "ProgramHomeImgs/UserHead/";
+	/**上传成功*/
+	public static final String UPLOAD_SUCCESSFUL = "上传成功!";
+	
 }
