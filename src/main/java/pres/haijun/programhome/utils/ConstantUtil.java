@@ -54,5 +54,13 @@ public class ConstantUtil {
 	public static final String USER_HEAD = "ProgramHomeImgs/UserHead/";
 	/**上传成功*/
 	public static final String UPLOAD_SUCCESSFUL = "上传成功!";
+	/**添加成功*/
+	public static final String ADD_SUCCESSFUL = "添加成功!";
+	/**添加失败*/
+	public static final String ADD_ERROR = "添加失败!";
+	/**成功*/
+	public static final String SUCCESSFUL = "成功!";
+	/**失败*/
+	public static final String ERROR = "失败!";
 	
 }
