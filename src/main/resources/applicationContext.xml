@@ -29,7 +29,8 @@
 		<!-- 类型别名包，引入pres.haijun.programhome.bean下的所有类 -->
 		<property name="typeAliasesPackage" value="pres.haijun.programhome.bean" />
 		<!--指定sql映射xml文件的路径 -->
-		<property name="mapperLocations" value="classpath:pres/haijun/programhome/mapper/*Mapper.xml" />
+		<property name="mapperLocations"
+			value="classpath:pres/haijun/programhome/mapper/*Mapper.xml" />
 	</bean>
 
 	<!--自动扫描映射接口 -->
@@ -47,7 +48,8 @@
 
 	<!--自动扫描组件 -->
 	<context:component-scan base-package="pres.haijun.programhome">
-		<context:exclude-filter type="aspectj" expression="pres.haijun.programhome.dao.*" />
+		<context:exclude-filter type="aspectj"
+			expression="pres.haijun.programhome.dao.*" />
 	</context:component-scan>
 
 	<aop:aspectj-autoproxy proxy-target-class="true" />

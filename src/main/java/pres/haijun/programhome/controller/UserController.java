@@ -1,6 +1,7 @@
 package pres.haijun.programhome.controller;
 
 import java.io.File;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
 import pres.haijun.programhome.model.BaseModel;
 import pres.haijun.programhome.model.LoginModel;
@@ -69,23 +69,21 @@ public class UserController {
 			baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
 			baseModel.setMessage(ConstantUtil.USERPHONE_PASSWORD_CAN_NOT_EMPTY);
 		} else {
-			UserBean bean = new UserBean();
-			bean.setUserPhone(userPhone);
-			bean.setUserId(RandomCodeUtil.createCode(userPhone));
+			userBean.setUserId(RandomCodeUtil.createCode(userPhone));
 			try {
 				EncryptionUtil util = new EncryptionUtil();
-				bean.setPassword(util.encrypt(passWord));
+				userBean.setPassword(util.encrypt(passWord));
 			} catch (Exception e) {
-				bean.setPassword(passWord);
 				e.printStackTrace();
 			}
 			// 是否已经注册过
-			boolean isHaveRegion = userService.findUser(bean) != null ? true : false;
+			boolean isHaveRegion = userService.findUser(userBean) != null ? true : false;
 			if (isHaveRegion) {
 				baseModel.setCode(ConstantUtil.CODE_FLAG_ONE);
 				baseModel.setMessage(ConstantUtil.USER_OLREADY_REGION);
 			} else {
-				int rows = userService.registeredUser(bean);
+				userBean.setCreateTime(new Date());
+				int rows = userService.registeredUser(userBean);
 				if (rows > 0) {
 					baseModel.setCode(ConstantUtil.CODE_FLAG_ZERO);
 					baseModel.setMessage(ConstantUtil.REGION_SUCCESSFUL);
@@ -112,24 +110,23 @@ public class UserController {
 		if (TextUtil.isEmpty(userPhone) || TextUtil.isEmpty(password)) {
 			model.setCode(ConstantUtil.CODE_FLAG_ONE);
 			model.setMessage(ConstantUtil.USERPHONE_PASSWORD_CAN_NOT_EMPTY);
-			model.setResult(new LoginBean());
+			model.setResult(new UserBean());
 		} else {
-			EncryptionUtil util;
 			try {
-				util = new EncryptionUtil();
+				EncryptionUtil util = new EncryptionUtil();
 				user.setPassword(util.encrypt(password));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			LoginBean loginBean = userService.login(user);
-			if (loginBean != null) {
+			user = userService.login(user);
+			if (user != null) {
 				model.setCode(ConstantUtil.CODE_FLAG_ZERO);
 				model.setMessage(ConstantUtil.LOGIN_SUCCESSFUL);
-				model.setResult(loginBean);
+				model.setResult(user);
 			} else {
 				model.setCode(ConstantUtil.CODE_FLAG_ONE);
 				model.setMessage(ConstantUtil.USERPHONE_PASSWORD_ERROR);
-				model.setResult(new LoginBean());
+				model.setResult(new UserBean());
 			}
 		}
 		return model;

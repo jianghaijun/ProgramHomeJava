@@ -1,10 +1,11 @@
 package pres.haijun.programhome.service.impl;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import pres.haijun.programhome.bean.LoginBean;
 import pres.haijun.programhome.bean.UserBean;
 import pres.haijun.programhome.dao.UserDao;
 import pres.haijun.programhome.service.UserService;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 
 	public int registeredUser(UserBean user) {
+		user.setCreateTime(new Date());
 		return userDao.registeredUser(user);
 	}
 	
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public LoginBean login(UserBean user) {
+	public UserBean login(UserBean user) {
 		return userDao.login(user);
 	}
 

@@ -26,16 +26,16 @@ package pres.haijun.programhome.model;
  *
  */
 
-import pres.haijun.programhome.bean.LoginBean;
+import pres.haijun.programhome.bean.UserBean;
 
 public class LoginModel extends BaseModel {
-	private LoginBean result;
+	private UserBean result;
 
-	public LoginBean getResult() {
+	public UserBean getResult() {
 		return result;
 	}
 
-	public void setResult(LoginBean result) {
+	public void setResult(UserBean result) {
 		this.result = result;
 	}
 

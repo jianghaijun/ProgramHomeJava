@@ -1,56 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pres.haijun.programhome.dao.UserDao">
-    <insert id="registeredUser" parameterType="pres.haijun.programhome.bean.UserBean">
-    	insert into t_user
-    	<trim prefix="(" suffix=")" suffixOverrides=",">
-    		<if test="userPhone != null">
-    			userPhone,
-    		</if>
-    		<if test="password != null">
-    			password,
-    		</if>
-    		<if test="userId != null">
-    			userId,
-    		</if>
-    	</trim>
-    	
-    	<trim prefix="values (" suffix=")" suffixOverrides=",">
-    		<if test="userPhone != null">
-    			#{userPhone, jdbcType=VARCHAR},
-    		</if>
-    		<if test="password != null">
-    			#{password, jdbcType=VARCHAR},
-    		</if>
-    		<if test="userId != null">
-    			#{userId, jdbcType=VARCHAR},
-    		</if>
-    	</trim>
-    </insert>
-    
-    <select id="findUser" parameterType="pres.haijun.programhome.bean.UserBean" resultType="pres.haijun.programhome.bean.UserBean">
-        select * from t_user where userPhone = #{userPhone, jdbcType=VARCHAR}
-    </select>
-    
-    <select id="login" parameterType="pres.haijun.programhome.bean.UserBean" resultType="pres.haijun.programhome.bean.LoginBean">
-        select userName, userId from t_user where userPhone = #{userPhone, jdbcType=VARCHAR} and password = #{password, jdbcType=VARCHAR}
-    </select>
-    
-    <update id="updateUser" parameterType="pres.haijun.programhome.bean.UserBean">
-    	update t_user
-    	<set>
-    		<if test="userName != null">
-    			userName = #{userName, jdbcType=VARCHAR},
-    		</if>
-    		
-    		<if test="newPassword != null">
-    			password = #{newPassword, jdbcType=VARCHAR},
-    		</if>
-    		
-    		<if test="userHead != null">
-    			userHead = #{userHead, jdbcType=VARCHAR},
-    		</if>
-    	</set>
-    	where userId = #{userId, jdbcType=VARCHAR}
-    </update>
+	<resultMap type="pres.haijun.programhome.bean.UserBean" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="CHAR" />
+	    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+	    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+	    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	    <result column="user_head" property="userHead" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="registeredUser" parameterType="pres.haijun.programhome.bean.UserBean">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userPhone != null">
+				user_phone,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+		</trim>
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userPhone != null">
+				#{userPhone, jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password, jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId, jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime, jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="findUser" parameterType="pres.haijun.programhome.bean.UserBean" resultMap="BaseResultMap">
+		select * from t_user where user_phone = #{userPhone, jdbcType=VARCHAR}
+	</select>
+
+	<select id="login" parameterType="pres.haijun.programhome.bean.UserBean" resultMap="BaseResultMap">
+		select user_name, user_id from t_user where user_phone = #{userPhone, jdbcType=VARCHAR} and password = #{password, jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateUser" parameterType="pres.haijun.programhome.bean.UserBean">
+		update t_user
+		<set>
+			<if test="userName != null">
+				user_name = #{userName, jdbcType=VARCHAR},
+			</if>
+
+			<if test="newPassword != null">
+				password = #{newPassword, jdbcType=VARCHAR},
+			</if>
+
+			<if test="userHead != null">
+				user_head = #{userHead, jdbcType=VARCHAR},
+			</if>
+		</set>
+		where user_id = #{userId, jdbcType=VARCHAR}
+	</update>
 </mapper>

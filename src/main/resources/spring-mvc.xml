@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans 
-	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
@@ -12,39 +10,42 @@
 		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd">
-		
-	<context:annotation-config/>
+
+	<context:annotation-config />
 
 	<mvc:annotation-driven>
 		<!-- 处理responseBody 里面日期类型 -->
 		<mvc:message-converters>
-			<bean class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>
+			<bean
+				class="org.springframework.http.converter.json.GsonHttpMessageConverter" />
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes">  
-                    <list>  
-                      	<value>text/plain;charset=UTF-8</value>
-                        <value>text/html;charset=UTF-8</value>
-                        <value>application/json;charset=UTF-8</value>  
-                    </list>  
-                </property>		
-            </bean>
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
 	<mvc:default-servlet-handler />
 
 	<!-- 启动事务添加配置 -->
-	<context:component-scan base-package="pres.haijun.programhome.*"/>
-	
+	<context:component-scan base-package="pres.haijun.programhome.*" />
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
 	<!-- 支持上传文件 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/images/**" location="/image/" />

@@ -1,6 +1,7 @@
 package pres.haijun.programhome.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 
@@ -35,14 +36,7 @@ public class UserBean implements Serializable {
 	private String password;
 	private String userId;
 	private String newPassword;
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
+	private Date createTime;
 
 	public String getUserHead() {
 		return userHead;
@@ -76,16 +70,32 @@ public class UserBean implements Serializable {
 		this.password = password;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public String getUserId() {
 		return userId;
 	}
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
