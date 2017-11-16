@@ -4,8 +4,10 @@ import java.io.File;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,7 @@ import pres.haijun.programhome.service.UserService;
 import pres.haijun.programhome.utils.ConstantUtil;
 import pres.haijun.programhome.utils.EncryptionUtil;
 import pres.haijun.programhome.utils.RandomCodeUtil;
+import pres.haijun.programhome.utils.SessionUtil;
 import pres.haijun.programhome.utils.TextUtil;
 
 /**
@@ -47,10 +50,79 @@ import pres.haijun.programhome.utils.TextUtil;
  *  Created by HaiJun on 2017年10月30日 下午9:33:18
  */
 @Controller
-@RequestMapping("/user")
 public class UserController {
 	@Resource
 	private UserService userService;
+	
+	@RequestMapping("/homePage")
+	public String homePage() {
+		return "login";
+	}
+	
+	/**
+	 * 登陆接口
+	 * 
+	 * @param request
+	 * @param model
+	 * @param username 用户名
+	 * @param password 密码
+	 * @return
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(HttpServletRequest request, Model model, String userName, String password) {
+
+		if (userName == null || userName.length() == 0 || password == null || password.length() == 0) {
+			model.addAttribute("username", "用户名、密码不能为空");
+			return "login";
+		}
+		
+		UserBean user = new UserBean();
+		user.setUserPhone(userName);
+		try {
+			EncryptionUtil encryptionUtil = new EncryptionUtil();
+			user.setPassword(encryptionUtil.encrypt(password));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		UserBean loginUser = userService.login(user);
+		if (loginUser == null) {
+			model.addAttribute("error", "用户名或密码错误!");
+			return "login";
+		} else {
+			SessionUtil.saveSession(request, loginUser);
+			return "redirect:/index";
+		}
+	}
+	
+	/**
+	 * 退出登录
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/logout")
+	public String logout(HttpServletRequest request) {
+		if (SessionUtil.isLogin(request)) {
+			SessionUtil.delSession(request);
+		}
+		return "login";
+	}
+
+	/**
+	 * 后台首页
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/index")
+	public String index(HttpServletRequest request) {
+
+		if (!SessionUtil.isLogin(request)) {
+			return "redirect:/admin/login";
+		}
+
+		return "index";
+	}
 	
 	/**
 	 * 注册用户
@@ -58,7 +130,7 @@ public class UserController {
 	 * @param passWord
 	 * @return
 	 */
-	@RequestMapping(value = "/registeredUser", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	@RequestMapping(value = "/user/registeredUser", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public BaseModel regionUser(@RequestBody UserBean userBean) {
 		String userPhone = userBean.getUserPhone();
@@ -101,7 +173,7 @@ public class UserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	@RequestMapping(value = "/user/login", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public LoginModel login(@RequestBody UserBean user) {
 		String userPhone = user.getUserPhone();
@@ -137,7 +209,7 @@ public class UserController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "/updatePassWord", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+	@RequestMapping(value = "/user/updatePassWord", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public BaseModel updatePassWord(@RequestBody UserBean user) {
 		String userId = user.getUserId();
@@ -173,7 +245,7 @@ public class UserController {
 	 * @param userPhone
 	 * @return
 	 */
-	@RequestMapping(value = "/uploadUserHead", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/uploadUserHead", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseModel uploadUserHead(@RequestParam(value = "file", required = false) MultipartFile file, String userId) {
 		BaseModel baseModel = new BaseModel();

@@ -1,5 +1,6 @@
 package pres.haijun.programhome.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -28,7 +29,8 @@ import java.util.Date;
  * 			  Create HaiJun By 2017年11月14日
  *
  */
-public class OpinionBean {
+public class OpinionBean implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String userId;
 	private String opinion;
 	private Date submitTime;
