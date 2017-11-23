@@ -30,6 +30,7 @@ import java.util.Date;
 public class UserBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private String id;
 	private String userHead;
 	private String userPhone;
 	private String userName;
@@ -37,6 +38,14 @@ public class UserBean implements Serializable {
 	private String userId;
 	private String newPassword;
 	private Date createTime;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getUserHead() {
 		return userHead;
